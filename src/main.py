@@ -3,6 +3,7 @@ from data_loader import load_ideas
 from extractor import extract_dimensions
 from similarity import compute_similarity_matrix, get_most_similar_pairs, find_top_k_similar
 from novelty import compute_novelty_from_similarity
+from clustering import cluster_ideas, assign_new_idea_cluster
 
 
 def build_combined_text(row: pd.Series) -> str:
@@ -41,7 +42,7 @@ def build_library():
     return structured_df
 
 
-def evaluate_new_idea(new_idea_text: str, structured_df: pd.DataFrame):
+def evaluate_new_idea(new_idea_text: str, structured_df: pd.DataFrame, model, vectorizer):
     print("\n=== EVALUATING NEW IDEA ===\n")
     print("New idea:")
     print(new_idea_text)
@@ -63,6 +64,8 @@ def evaluate_new_idea(new_idea_text: str, structured_df: pd.DataFrame):
         structured_df["title"].tolist(),
         k=3
     )
+    cluster = assign_new_idea_cluster(new_idea_combined, model, vectorizer)
+    print(f"\nNew idea belongs to cluster: {cluster}")
 
     print("\nTop similar existing ideas:")
     for match in top_matches:
@@ -76,6 +79,12 @@ def evaluate_new_idea(new_idea_text: str, structured_df: pd.DataFrame):
 
 def main():
     structured_df = build_library()
+    print("\n=== CLUSTERING IDEAS ===\n")
+
+    labels, model, vectorizer = cluster_ideas(structured_df["combined_text"], n_clusters=2)
+
+    structured_df["cluster"] = labels
+    print(structured_df[["title", "cluster"]])
 
     print("\n=== SIMILARITY MATRIX FOR IDEA LIBRARY ===\n")
     similarity_matrix = compute_similarity_matrix(structured_df["combined_text"])
@@ -97,7 +106,7 @@ def main():
         print("-" * 50)
 
     user_idea = input("\nEnter a new idea to evaluate:\n")
-    evaluate_new_idea(user_idea, structured_df)
+    evaluate_new_idea(user_idea, structured_df, model, vectorizer)
 
 
 if __name__ == "__main__":
