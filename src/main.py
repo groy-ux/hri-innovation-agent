@@ -17,9 +17,8 @@ def build_combined_text(row: pd.Series) -> str:
     )
 
 
-def main():
+def build_library():
     df = load_ideas()
-
     extracted_rows = []
 
     print("\n=== RUNNING EXTRACTION ON IDEA LIBRARY ===\n")
@@ -35,39 +34,20 @@ def main():
         }
         extracted_rows.append(combined_row)
 
-        print(f"\nIdea: {row['title']}")
-        print(extracted)
-
     structured_df = pd.DataFrame(extracted_rows)
     structured_df["combined_text"] = structured_df.apply(build_combined_text, axis=1)
+    structured_df.to_csv("data/processed/ideas_structured.csv", index=False)
 
-    print("\n=== SIMILARITY MATRIX ===\n")
-    similarity_matrix = compute_similarity_matrix(structured_df["combined_text"])
-    print(similarity_matrix)
+    return structured_df
 
-    print("\n=== MOST SIMILAR IDEA FOR EACH IDEA ===\n")
-    similarity_results = get_most_similar_pairs(
-        similarity_matrix,
-        structured_df["title"].tolist()
-    )
 
-    for result in similarity_results:
-        novelty = compute_novelty_from_similarity(result["similarity_score"])
-        print(f"Idea: {result['idea']}")
-        print(f"Most similar idea: {result['most_similar_idea']}")
-        print(f"Similarity score: {result['similarity_score']}")
-        print(f"Novelty score: {novelty['novelty_score']}")
-        print(f"Novelty band: {novelty['novelty_band']}")
-        print("-" * 50)
-
-    new_idea_text = "A vehicle cabin system that senses passenger emotions and adjusts lighting, music, and temperature to improve comfort."
-
-    print("\n=== EVALUATING A NEW IDEA ===\n")
+def evaluate_new_idea(new_idea_text: str, structured_df: pd.DataFrame):
+    print("\n=== EVALUATING NEW IDEA ===\n")
     print("New idea:")
     print(new_idea_text)
 
     new_idea_extracted = extract_dimensions(new_idea_text)
-    print("\nExtracted dimensions for new idea:")
+    print("\nExtracted dimensions:")
     print(new_idea_extracted)
 
     new_idea_row = {
@@ -93,8 +73,31 @@ def main():
         print(f"Novelty band: {novelty['novelty_band']}")
         print("-" * 50)
 
-    structured_df.to_csv("data/processed/ideas_structured.csv", index=False)
-    print("\nSaved structured data to data/processed/ideas_structured.csv")
+
+def main():
+    structured_df = build_library()
+
+    print("\n=== SIMILARITY MATRIX FOR IDEA LIBRARY ===\n")
+    similarity_matrix = compute_similarity_matrix(structured_df["combined_text"])
+    print(similarity_matrix)
+
+    print("\n=== MOST SIMILAR IDEA FOR EACH IDEA ===\n")
+    similarity_results = get_most_similar_pairs(
+        similarity_matrix,
+        structured_df["title"].tolist()
+    )
+
+    for result in similarity_results:
+        novelty = compute_novelty_from_similarity(result["similarity_score"])
+        print(f"Idea: {result['idea']}")
+        print(f"Most similar idea: {result['most_similar_idea']}")
+        print(f"Similarity score: {result['similarity_score']}")
+        print(f"Novelty score: {novelty['novelty_score']}")
+        print(f"Novelty band: {novelty['novelty_band']}")
+        print("-" * 50)
+
+    user_idea = input("\nEnter a new idea to evaluate:\n")
+    evaluate_new_idea(user_idea, structured_df)
 
 
 if __name__ == "__main__":
