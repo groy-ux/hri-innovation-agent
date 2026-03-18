@@ -1,22 +1,22 @@
 idea_id,title,raw_text,core_mechanism,problem_opportunity,intended_outcome,stakeholder,context,value_type,combined_text
-1,Stress-aware cabin,A system that detects passenger stress and adapts cabin lighting and music.,A system that detects passenger stress a,passenger stress,improve comfort,passenger,vehicle cabin,comfort and safety,"Title: Stress-aware cabin
+1,Stress-aware cabin,A system that detects passenger stress and adapts cabin lighting and music.,A system that detects passenger stress a,passenger stress,improve comfort,passenger,vehicle cabin,comfort,"Title: Stress-aware cabin
 Core mechanism: A system that detects passenger stress a
 Problem/opportunity: passenger stress
 Intended outcome: improve comfort
 Stakeholder: passenger
 Context: vehicle cabin
-Value type: comfort and safety"
-2,Child comfort seat,A smart child seat that monitors discomfort and adjusts seat temperature.,A smart child seat that monitors discomf,seat discomfort,improve comfort,passenger,vehicle seat,comfort and safety,"Title: Child comfort seat
+Value type: comfort"
+2,Child comfort seat,A smart child seat that monitors discomfort and adjusts seat temperature.,A smart child seat that monitors discomf,seat discomfort,improve comfort,passenger,vehicle seat,comfort,"Title: Child comfort seat
 Core mechanism: A smart child seat that monitors discomf
 Problem/opportunity: seat discomfort
 Intended outcome: improve comfort
 Stakeholder: passenger
 Context: vehicle seat
-Value type: comfort and safety"
-3,Fatigue warning system,A driver monitoring system that detects drowsiness and triggers alerts.,A driver monitoring system that detects ,driver fatigue,improve safety,driver,driving,comfort and safety,"Title: Fatigue warning system
+Value type: comfort"
+3,Fatigue warning system,A driver monitoring system that detects drowsiness and triggers alerts.,A driver monitoring system that detects ,driver fatigue,improve safety,driver,driving,safety,"Title: Fatigue warning system
 Core mechanism: A driver monitoring system that detects 
 Problem/opportunity: driver fatigue
 Intended outcome: improve safety
 Stakeholder: driver
 Context: driving
-Value type: comfort and safety"
+Value type: safety"
